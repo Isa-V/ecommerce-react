@@ -1,0 +1,39 @@
+.itemCountContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .buttonsRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .buttonsRow button {
+    margin: 5px;
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: #eb7600;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-weight: 400;
+  }
+
+  .buttonsRow h3 {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .addToCartButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #eb7600;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }

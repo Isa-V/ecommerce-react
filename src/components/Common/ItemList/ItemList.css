@@ -1,0 +1,7 @@
+.CardsContainer{
+    display: flex;
+    flex-flow: row wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: flex-start;
+}
