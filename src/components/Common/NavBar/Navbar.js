@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../NavBar/NavBar.css";
 import CartWidget from "../CartWidget/CartWidget";
 import logo from "../NavBar/Assets/logo.svg";
+import CartModal from "../CartModal/CartModal";
+import Modal from "react-modal";
 
 const NavBar = () => {
   const [burgerClass, setBurgerClass] = useState("burgerBar unclicked");
@@ -18,6 +20,21 @@ const NavBar = () => {
       setMenuClass("navMenu menuHidden");
     }
     setInMenuClicked(!isMenuClicked);
+  };
+
+  //modal
+  useEffect(() => {
+    Modal.setAppElement("body");
+  }, []);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
   };
 
   return (
@@ -53,8 +70,11 @@ const NavBar = () => {
           </Link>
         </div>
 
-        <div>
-          <CartWidget />
+        <div onMouseEnter={openModal} onMouseLeave={closeModal}>
+          
+          <CartWidget/>
+
+          <CartModal isOpen={modalIsOpen} onRequestClose={closeModal} />
         </div>
       </div>
 

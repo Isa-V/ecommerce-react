@@ -3,6 +3,8 @@ import '../ItemCount/ItemCount.css'
 
 const ItemCount = ({stock, initial, addCart}) => {
 
+
+    // cantidad
     const [quantity, setQuantity] = useState(initial);
 
     const increment = () => {
@@ -19,9 +21,12 @@ const ItemCount = ({stock, initial, addCart}) => {
 
     const addCartButton = () => {
         if(quantity>0){
-            addCart(quantity)
+            addCart(quantity)            
         }
     }
+
+
+
     return(
 
         <div className="itemCountContainer">

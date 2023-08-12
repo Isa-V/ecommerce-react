@@ -1,6 +1,7 @@
 import "../Item/Item.css"
 import {Link} from 'react-router-dom'
-const Item = ({id, name, description, price, image}) => {
+
+const Item = ({id, name, price, image}) => {
 
     return(
         <div className='ItemCard'>

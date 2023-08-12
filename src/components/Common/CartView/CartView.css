@@ -1,0 +1,54 @@
+.cartViewContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  .cartItems {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .orderSummary {
+    flex: 0.4;
+    background-color: #1a191c;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .orderSummaryH2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .summaryItem {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  
+  .summaryTotal {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    border-top: 1px solid #ccc;
+    padding-top: 8px;
+  }
+  
+  .checkoutButton {
+    display: block;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  
+  .checkoutButton:hover {
+    background-color: #0056b3;
+  }
+  

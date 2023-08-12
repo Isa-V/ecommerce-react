@@ -1,9 +1,47 @@
+import {useContext, useState, useEffect} from 'react'
 import ItemCount from '../ItemCount/ItemCount'
 import '../ItemDetail/ItemDetail.css'
+import { CartContext } from '../Context/CartContext'
+import CartModal from "../CartModal/CartModal";
+import Modal from "react-modal"; 
 
 const ItemDetail = ({id, name, description, price, category, stock, image}) => {
+    //modal
+    useEffect(() => {
+        Modal.setAppElement("body");
+      }, []);
+
+    const [modalIsOpen, setModalIsOpen] = useState (false);
+
+    const openModal = () =>{
+        setModalIsOpen(true);
+    }
+
+    const closeModal = () =>{
+        setModalIsOpen(false);
+    }
+
+
+
+    const [addQuantity, setAddQuantity] = useState(0);
+
+    const { addItem } = useContext(CartContext);
+
+    const handlerQuantity = (quantity) =>{
+        setAddQuantity(quantity)
+
+        const item = {
+            id, name, price, image
+        }
+
+        addItem (item, quantity)
+
+        openModal()
+    }
+
     return(
         <div className='ItemDetalContainerCard'>
+            <CartModal isOpen={modalIsOpen} onRequestClose={closeModal} />
             <aside className='ItemDetailImgContainer'>
                 <img src={image} alt={name} className='ItemDetailImg'/>
             </aside>
@@ -22,7 +60,9 @@ const ItemDetail = ({id, name, description, price, category, stock, image}) => {
 
                 </div>
                 <footer>
-                    <ItemCount initial={1} stock={stock} addCart={(quantity)=> console.log('cantidad agregada al carrito: '+quantity)}/>
+                    {/*<ItemCount initial={1} stock={stock} addCart={(quantity)=> console.log('cantidad agregada al carrito: '+quantity)}/>*/}
+                    <ItemCount initial={1} stock={stock} addCart={handlerQuantity}/>
+                    <CartModal isOpen={modalIsOpen} onRequestClose={closeModal} />
                 </footer>
             </div>
 
