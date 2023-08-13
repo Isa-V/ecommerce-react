@@ -19,7 +19,6 @@ const NavBar = () => {
   const [menuClass, setMenuClass] = useState("navMenu menuHidden");
   const [isMenuClicked, setInMenuClicked] = useState(false);
 
-  
   const closeMenu = () => {
     setBurgerClass("burgerBar unclicked");
     setMenuClass("navMenu menuHidden");
