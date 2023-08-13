@@ -54,7 +54,7 @@ const CheckoutForm = () => {
       ...OrderSummary,
       [name]: value,
     }));
-  };  
+  };
 
   const handleRegionChange = (e) => {
     const region = e.target.value;
@@ -81,14 +81,14 @@ const CheckoutForm = () => {
   const saveOrderData = async () => {
     const orderNumber = generateOrderNumber();
     await new Promise((resolve) => setTimeout(resolve, 1000));
-  
+
     const updatedOrderSummary = {
       ...OrderSummary,
       orderNumber: orderNumber,
     };
 
     setOrderSummary(updatedOrderSummary);
-  
+
     return orderNumber;
   };
 
@@ -97,14 +97,13 @@ const CheckoutForm = () => {
     return emailRegex.test(email);
   };
 
-
   const validateForm = () => {
     const newErrors = {};
-  
+
     if (!OrderSummary.firstName) {
       newErrors.firstName = "Este campo es obligatorio";
     }
-  
+
     if (!OrderSummary.lastName) {
       newErrors.lastName = "Este campo es obligatorio";
     }
@@ -129,24 +128,24 @@ const CheckoutForm = () => {
     if (!OrderSummary.postalCode) {
       newErrors.postalCode = "Este campo es obligatorio";
     }
-  
+
     return newErrors;
   };
 
-
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateForm();
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      return; 
+      return;
     }
 
     try {
       const orderNumber = await saveOrderData();
-      
+
       const orderDetails = {
         OrderSummary: {
           ...OrderSummary,
@@ -156,9 +155,8 @@ const CheckoutForm = () => {
         total: total(),
         orderNumber,
       };
-      
+
       setOrderDetails(orderDetails);
-      console.log(orderDetails);
       navigate("/order-summary");
     } catch (error) {
       console.error("Error al guardar los datos de la orden:", error);
@@ -170,94 +168,126 @@ const CheckoutForm = () => {
       <h2>Ingresa tus datos y finaliza tu compra:</h2>
       <div className="checkoutContainer">
         <form onSubmit={handleSubmit} className="checkoutForm">
+          <div></div>
           <h3>Datos personales</h3>
-          <label>
-            Nombre:
-            <input
-              type="text"
-              name="firstName"
-              value={OrderSummary.firstName}
-              onChange={handleInputChange}
-            />
-            {errors.firstName && <p className="error">{errors.firstName}</p>}
-          </label>
-          <label>
-            Apellido:
-            <input
-              type="text"
-              name="lastName"
-              value={OrderSummary.lastName}
-              onChange={handleInputChange}
-            />
-            {errors.lastName && <p className="error">{errors.lastName}</p>}
-          </label>
-          <label>
-            Correo electrónico:
-            <input
-              type="email"
-              name="email"
-              value={OrderSummary.email}
-              onChange={handleInputChange}
-            />
-            {errors.email && <p className="error">{errors.email}</p>}
-          </label>
+          <div className="inputGroup">
+            <label htmlFor="firstName">
+              Nombre:
+              <input
+                type="text"
+                name="firstName"
+                value={OrderSummary.firstName}
+                onChange={handleInputChange}
+              />
+              {errors.firstName && <p className="error">{errors.firstName}</p>}
+            </label>
+          </div>
+
+          <div className="inputGroup">
+            <label>
+              Apellido:
+              <input
+                type="text"
+                name="lastName"
+                value={OrderSummary.lastName}
+                onChange={handleInputChange}
+              />
+              {errors.lastName && <p className="error">{errors.lastName}</p>}
+            </label>
+          </div>
+
+          <div className="inputGroup">
+            <label>
+              Correo electrónico:
+              <input
+                type="email"
+                name="email"
+                value={OrderSummary.email}
+                onChange={handleInputChange}
+              />
+              {errors.email && <p className="error">{errors.email}</p>}
+            </label>
+          </div>
 
           <h3>Dirección de Envío</h3>
-          <label>
-            Región:
-            <select
-              name="region"
-              value={OrderSummary.region}
-              onChange={handleRegionChange}
-            >
-              <option value="">Selecciona una región</option>
-              {Object.keys(regionsAndCommunes).map((region) => (
-                <option key={region} value={region}>
-                  {region}
-                </option>
-              ))}
-            </select>
-            {errors.region && <p className="error">{errors.region}</p>}
-          </label>
-          <label>
-            Comuna:
-            <select
-              name="comuna"
-              value={OrderSummary.comuna}
-              onChange={handleComunaChange}
-            >
-              <option value="">Selecciona una comuna</option>
-              {communes.map((comuna) => (
-                <option key={comuna} value={comuna}>
-                  {comuna}
-                </option>
-              ))}
-            </select>
-            {errors.comuna && <p className="error">{errors.comuna}</p>}
-          </label>
-          <label>
-            Calle y número:
-            <input
-              type="text"
-              name="address"
-              value={OrderSummary.address}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Código Postal:
-            <input
-              type="number"
-              name="postalCode"
-              value={OrderSummary.postalCode}
-              onChange={handleInputChange}
-            />
-          </label>
-          {errors.postalCode && <p className="error">{errors.postalCode}</p>}
+          <div className="inputGroup">
+            <label>
+              Región:
+              <select
+                name="region"
+                value={OrderSummary.region}
+                onChange={handleRegionChange}
+              >
+                <option value="">Selecciona una región</option>
+                {Object.keys(regionsAndCommunes).map((region) => (
+                  <option key={region} value={region}>
+                    {region}
+                  </option>
+                ))}
+              </select>
+              {errors.region && <p className="error">{errors.region}</p>}
+            </label>
+          </div>
 
-          <button type="submit" onClick={handleSubmit}>
+          <div className="inputGroup">
+            <label>
+              Comuna:
+              <select
+                name="comuna"
+                value={OrderSummary.comuna}
+                onChange={handleComunaChange}
+              >
+                <option value="">Selecciona una comuna</option>
+                {communes.map((comuna) => (
+                  <option key={comuna} value={comuna}>
+                    {comuna}
+                  </option>
+                ))}
+              </select>
+              {errors.comuna && <p className="error">{errors.comuna}</p>}
+            </label>
+          </div>
+
+          <div className="inputGroup">
+            <label>
+              Calle y número:
+              <input
+                type="text"
+                name="address"
+                value={OrderSummary.address}
+                onChange={handleInputChange}
+              />
+              {errors.address && <p className="error">{errors.address}</p>}
+            </label>
+          </div>
+
+          <div className="inputGroup">
+            <label>
+              Código Postal:
+              <input
+                type="number"
+                name="postalCode"
+                value={OrderSummary.postalCode}
+                onChange={handleInputChange}
+              />
+              {errors.postalCode && (
+                <p className="error">{errors.postalCode}</p>
+              )}
+            </label>
+          </div>
+
+          <button
+            className="checkoutButton"
+            type="submit"
+            onClick={handleSubmit}
+            disabled={total() === 0} // Deshabilitar el botón si el total es 0
+          >
             Realizar Pedido
           </button>
+
+          {total() === 0 && (
+            <p className="error">No puedes realizar un pedido con total 0.</p>
+          )}
         </form>
 
         <div className="checkoutSummary">

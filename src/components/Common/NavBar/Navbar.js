@@ -19,6 +19,12 @@ const NavBar = () => {
   const [menuClass, setMenuClass] = useState("navMenu menuHidden");
   const [isMenuClicked, setInMenuClicked] = useState(false);
 
+  
+  const closeMenu = () => {
+    setBurgerClass("burgerBar unclicked");
+    setMenuClass("navMenu menuHidden");
+  };
+
   const updateMenu = () => {
     if (!isMenuClicked) {
       setBurgerClass("burgerBar clicked");
@@ -48,11 +54,12 @@ const NavBar = () => {
   return (
     <nav>
       <div className="navContainer">
-        <div className="navBurgerButton" onClick={updateMenu}>
+        {!shouldHideCart? (        <div className="navBurgerButton" onClick={updateMenu}>
           <div className={burgerClass}> </div>
           <div className={burgerClass}> </div>
           <div className={burgerClass}> </div>
-        </div>
+        </div>):(null)}
+
 
         <div className="navLogo">
           <Link to="/">
@@ -93,19 +100,19 @@ const NavBar = () => {
 
       <div className={menuClass}>
         <div className="navMenuButtonsContainer">
-          <Link to="/" className="navButton">
+          <Link to="/" className="navButton" onClick={closeMenu}>
             Home
           </Link>
-          <Link to="/category/panaderia" className="navButton">
+          <Link to="/category/panaderia" className="navButton" onClick={closeMenu}>
             Panadería
           </Link>
-          <Link to="/category/pasteleria" className="navButton">
+          <Link to="/category/pasteleria" className="navButton" onClick={closeMenu}>
             Pastelería
           </Link>
-          <Link to="/category/cafeteria" className="navButton">
+          <Link to="/category/cafeteria" className="navButton" onClick={closeMenu}>
             Cafetería
           </Link>
-          <Link to="/category/jugos" className="navButton">
+          <Link to="/category/jugos" className="navButton" onClick={closeMenu}>
             Jugos
           </Link>
         </div>

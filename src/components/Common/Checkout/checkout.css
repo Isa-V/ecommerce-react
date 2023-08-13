@@ -4,12 +4,13 @@
 }
 
 .checkoutSummary{
-    min-width: 300px;
+    min-width: 250px;
     background-color: #19191c;
     border-radius: 10px;
     margin: 20px;
     padding: 20px;
     text-align: left;
+    max-width: 100%;
 }
 
 .checkoutForm{
@@ -18,7 +19,9 @@
     margin: 20px;
     padding: 20px;
     text-align: left;
-    max-width: 70%;
+    min-width: 70%;
+    display: flex;
+    flex-direction: column;
 }
 
 input {
@@ -27,6 +30,9 @@ input {
     border-radius: 10px;
     padding: 10px;
     margin: 10px;
+    min-width: 200px;
+    max-width: 100%;
+    display: block;
 }
 
 select {
@@ -35,6 +41,8 @@ select {
     border-radius: 10px;
     padding: 10px;
     margin: 10px;
+    display: block;
+    max-width: 100%;
 }
 
 .error {
@@ -42,3 +50,40 @@ select {
     font-size: 12px;
     margin-top: 4px;
   }
+
+  .inputGroup {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+  }
+  
+
+  .checkoutButton{
+    border: none;
+    border-radius: 5px;
+    background-color: #eb7600;
+    padding: 10px;
+  }
+
+  .checkoutButton:hover{
+    background-color: #e45800;
+    cursor: pointer;
+
+  }
+
+  @media (max-width: 768px) {
+
+    .checkoutForm{
+        width: 90%;
+    }
+
+    input{
+        width: 90%;
+    }
+
+    select{
+        width: 90%;
+    }
+
+  }
+
