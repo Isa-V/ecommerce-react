@@ -1,8 +1,14 @@
 nav {
   position: sticky;
-  top: 0; /* La barra de navegación se "pegará" en la parte superior */
-  background-color: white; /* Color de fondo de la barra de navegación */
-  z-index: 10; /* Asegura que la barra de navegación esté por encima del contenido */
+  top: 0;
+  background-color: white; 
+  z-index: 10; 
+}
+
+.navContentContainer{
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
 }
 
 .navBurgerButton {
@@ -98,7 +104,7 @@ nav {
   .navMenu {
     width: 60%;
     height: 100vh;
-    background-color: #0f0f10;
+    background-color: #19191c;
     position: absolute;
     top: 0;
     z-index: 0;

@@ -1,5 +1,6 @@
 .cartViewContainer {
     display: flex;
+    flex-flow: row wrap;
     justify-content: space-between;
     align-items: flex-start;
     padding: 20px;
@@ -7,14 +8,17 @@
   
   .cartItems {
     flex: 1;
-    margin-right: 20px;
+    background-color: #19191c;
+    padding: 20px;
+    margin:10px;
+    border-radius: 10px;
   }
   
   .orderSummary {
     flex: 0.4;
-    background-color: #1a191c;
+    background-color: #19191c;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 10px;
   }
   
   .orderSummaryH2 {

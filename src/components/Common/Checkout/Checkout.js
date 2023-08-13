@@ -1,55 +1,65 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { CartContext } from "../Context/CartContext";
+import "../Checkout/checkout.css";
+import { useNavigate } from "react-router-dom";
 
 const regionsAndCommunes = {
-    "Región de Arica y Parinacota": ["Arica", "Putre"],
-    "Región de Tarapacá": ["Iquique", "Pozo Almonte"],
-    "Región de Antofagasta": ["Antofagasta", "Calama", "Tocopilla"],
-    "Región de Atacama": ["Copiapó", "Vallenar", "Huasco"],
-    "Región de Coquimbo": ["La Serena", "Coquimbo", "Illapel", "Ovalle"],
-    "Región de Valparaíso": ["Valparaíso", "Viña del Mar", "Quilpué", "Concón"],
-    "Región del Libertador General Bernardo O'Higgins": ["Rancagua", "San Fernando", "Santa Cruz"],
-    "Región del Maule": ["Talca", "Curicó", "Linares"],
-    "Región de Ñuble": ["Chillán", "Chillán Viejo", "Bulnes"],
-    "Región del Biobío": ["Concepción", "Chillán", "Los Ángeles", "Talcahuano"],
-    "Región de La Araucanía": ["Temuco", "Padre Las Casas", "Villarrica"],
-    "Región de Los Ríos": ["Valdivia", "La Unión", "Los Lagos"],
-    "Región de Los Lagos": ["Puerto Montt", "Osorno", "Ancud"],
-    "Región de Aysén del General Carlos Ibáñez del Campo": ["Coyhaique", "Puerto Aysén"],
-    "Región de Magallanes y de la Antártica Chilena": ["Punta Arenas", "Puerto Natales"],
-    "Región Metropolitana": ["Santiago", "Puente Alto", "Maipú"],
-  };  
+  "Región de Arica y Parinacota": ["Arica", "Putre"],
+  "Región de Tarapacá": ["Iquique", "Pozo Almonte"],
+  "Región de Antofagasta": ["Antofagasta", "Calama", "Tocopilla"],
+  "Región de Atacama": ["Copiapó", "Vallenar", "Huasco"],
+  "Región de Coquimbo": ["La Serena", "Coquimbo", "Illapel", "Ovalle"],
+  "Región de Valparaíso": ["Valparaíso", "Viña del Mar", "Quilpué", "Concón"],
+  "Región del Libertador General Bernardo O'Higgins": [
+    "Rancagua",
+    "San Fernando",
+    "Santa Cruz",
+  ],
+  "Región del Maule": ["Talca", "Curicó", "Linares"],
+  "Región de Ñuble": ["Chillán", "Chillán Viejo", "Bulnes"],
+  "Región del Biobío": ["Concepción", "Chillán", "Los Ángeles", "Talcahuano"],
+  "Región de La Araucanía": ["Temuco", "Padre Las Casas", "Villarrica"],
+  "Región de Los Ríos": ["Valdivia", "La Unión", "Los Lagos"],
+  "Región de Los Lagos": ["Puerto Montt", "Osorno", "Ancud"],
+  "Región de Aysén del General Carlos Ibáñez del Campo": [
+    "Coyhaique",
+    "Puerto Aysén",
+  ],
+  "Región de Magallanes y de la Antártica Chilena": [
+    "Punta Arenas",
+    "Puerto Natales",
+  ],
+  "Región Metropolitana": ["Santiago", "Puente Alto", "Maipú"],
+};
 
 const CheckoutForm = () => {
-  const [shippingAddress, setShippingAddress] = useState({
+  const { cart, total, setOrderDetails } = useContext(CartContext);
+  const [errors, setErrors] = useState({});
+  const [communes, setCommunes] = useState([]);
+
+  const [OrderSummary, setOrderSummary] = useState({
     firstName: "",
     lastName: "",
-    direccion: "",
+    email: "",
     region: "",
     comuna: "",
-    codigoPostal: "",
+    address: "",
+    postalCode: "",
+    orderNumber: "",
   });
-
- const [crearCuenta, setCrearCuenta] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [communes, setCommunes] = useState([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setShippingAddress((direccionEnvio) => ({
-      ...direccionEnvio,
+    setOrderSummary((OrderSummary) => ({
+      ...OrderSummary,
       [name]: value,
     }));
-  };
-
-  const handleCheckboxChange = (e) => {
-    setCrearCuenta(e.target.checked);
-  };
+  };  
 
   const handleRegionChange = (e) => {
     const region = e.target.value;
-    setSelectedRegion(region);
-    setShippingAddress((direccionEnvio) => ({
-      ...direccionEnvio,
+    setOrderSummary((OrderSummary) => ({
+      ...OrderSummary,
       region,
       comuna: "",
     }));
@@ -58,102 +68,212 @@ const CheckoutForm = () => {
 
   const handleComunaChange = (e) => {
     const comuna = e.target.value;
-    setShippingAddress((direccionEnvio) => ({
-      ...direccionEnvio,
+    setOrderSummary((OrderSummary) => ({
+      ...OrderSummary,
       comuna,
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Dirección de Envío:", shippingAddress);
-    console.log("Crear Cuenta:", crearCuenta);
-    // Aquí podrías enviar los datos al servidor o realizar otras acciones
+  const generateOrderNumber = () => {
+    return Math.floor(Math.random() * 100000);
+  };
+
+  const saveOrderData = async () => {
+    const orderNumber = generateOrderNumber();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  
+    const updatedOrderSummary = {
+      ...OrderSummary,
+      orderNumber: orderNumber,
+    };
+
+    setOrderSummary(updatedOrderSummary);
+  
+    return orderNumber;
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
   };
 
 
+  const validateForm = () => {
+    const newErrors = {};
+  
+    if (!OrderSummary.firstName) {
+      newErrors.firstName = "Este campo es obligatorio";
+    }
+  
+    if (!OrderSummary.lastName) {
+      newErrors.lastName = "Este campo es obligatorio";
+    }
+    if (!OrderSummary.email) {
+      newErrors.email = "Este campo es obligatorio";
+    } else if (!isValidEmail(OrderSummary.email)) {
+      newErrors.email = "Ingresa un formato de correo electrónico válido";
+    }
+
+    if (!OrderSummary.region) {
+      newErrors.region = "Este campo es obligatorio";
+    }
+
+    if (!OrderSummary.comuna) {
+      newErrors.comuna = "Este campo es obligatorio";
+    }
+
+    if (!OrderSummary.address) {
+      newErrors.address = "Este campo es obligatorio";
+    }
+
+    if (!OrderSummary.postalCode) {
+      newErrors.postalCode = "Este campo es obligatorio";
+    }
+  
+    return newErrors;
+  };
+
+
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = validateForm();
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return; 
+    }
+
+    try {
+      const orderNumber = await saveOrderData();
+      
+      const orderDetails = {
+        OrderSummary: {
+          ...OrderSummary,
+          orderNumber: orderNumber,
+        },
+        cart,
+        total: total(),
+        orderNumber,
+      };
+      
+      setOrderDetails(orderDetails);
+      console.log(orderDetails);
+      navigate("/order-summary");
+    } catch (error) {
+      console.error("Error al guardar los datos de la orden:", error);
+    }
+  };
+
   return (
     <div>
-      <h2>Checkout</h2>
-      <form onSubmit={handleSubmit}>
-        <h3>Datos personales</h3>
-        <label>
-          Nombre:
-          <input
-            type="text"
-            name="firstName"
-            value={shippingAddress.firstName}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Apellido:
-          <input
-            type="text"
-            name="lastName"
-            value={shippingAddress.lastName}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
+      <h2>Ingresa tus datos y finaliza tu compra:</h2>
+      <div className="checkoutContainer">
+        <form onSubmit={handleSubmit} className="checkoutForm">
+          <h3>Datos personales</h3>
+          <label>
+            Nombre:
+            <input
+              type="text"
+              name="firstName"
+              value={OrderSummary.firstName}
+              onChange={handleInputChange}
+            />
+            {errors.firstName && <p className="error">{errors.firstName}</p>}
+          </label>
+          <label>
+            Apellido:
+            <input
+              type="text"
+              name="lastName"
+              value={OrderSummary.lastName}
+              onChange={handleInputChange}
+            />
+            {errors.lastName && <p className="error">{errors.lastName}</p>}
+          </label>
+          <label>
             Correo electrónico:
-            <input></input>
-        </label>
+            <input
+              type="email"
+              name="email"
+              value={OrderSummary.email}
+              onChange={handleInputChange}
+            />
+            {errors.email && <p className="error">{errors.email}</p>}
+          </label>
 
-        <h3>Dirección de Envío</h3>
-        <label>
-          Región:
-          <select name="region" value={shippingAddress.region} onChange={handleRegionChange}>
-            <option value="">Selecciona una región</option>
-            {Object.keys(regionsAndCommunes).map((region) => (
-              <option key={region} value={region}>
-                {region}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Comuna:
-          <select name="comuna" value={shippingAddress.comuna} onChange={handleComunaChange}>
-            <option value="">Selecciona una comuna</option>
-            {communes.map((comuna) => (
-              <option key={comuna} value={comuna}>
-                {comuna}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Calle y número:
-          <input
-            type="text"
-            name="direccion"
-            value={shippingAddress.direccion}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Código Postal:
-          <input
-            type="text"
-            name="codigoPostal"
-            value={shippingAddress.codigoPostal}
-            onChange={handleInputChange}
-          />
-        </label>
+          <h3>Dirección de Envío</h3>
+          <label>
+            Región:
+            <select
+              name="region"
+              value={OrderSummary.region}
+              onChange={handleRegionChange}
+            >
+              <option value="">Selecciona una región</option>
+              {Object.keys(regionsAndCommunes).map((region) => (
+                <option key={region} value={region}>
+                  {region}
+                </option>
+              ))}
+            </select>
+            {errors.region && <p className="error">{errors.region}</p>}
+          </label>
+          <label>
+            Comuna:
+            <select
+              name="comuna"
+              value={OrderSummary.comuna}
+              onChange={handleComunaChange}
+            >
+              <option value="">Selecciona una comuna</option>
+              {communes.map((comuna) => (
+                <option key={comuna} value={comuna}>
+                  {comuna}
+                </option>
+              ))}
+            </select>
+            {errors.comuna && <p className="error">{errors.comuna}</p>}
+          </label>
+          <label>
+            Calle y número:
+            <input
+              type="text"
+              name="address"
+              value={OrderSummary.address}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Código Postal:
+            <input
+              type="number"
+              name="postalCode"
+              value={OrderSummary.postalCode}
+              onChange={handleInputChange}
+            />
+          </label>
+          {errors.postalCode && <p className="error">{errors.postalCode}</p>}
 
-        <h3>Crear Cuenta</h3>
-        <label>
-          <input
-            type="checkbox"
-            checked={crearCuenta}
-            onChange={handleCheckboxChange}
-          />
-          Crear una cuenta para un proceso de pago más rápido la próxima vez
-        </label>
+          <button type="submit" onClick={handleSubmit}>
+            Realizar Pedido
+          </button>
+        </form>
 
-        <button type="submit">Realizar Pedido</button>
-      </form>
+        <div className="checkoutSummary">
+          <h3>Resumen de la Compra</h3>
+          <div>
+            <ul>
+              {cart.map((item) => (
+                <li key={item.id}>
+                  {item.name} - Cant. {item.quantity}
+                </li>
+              ))}
+            </ul>
+            <p>Total a Pagar: ${total()}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
+import deleteIcon from '../CartItem/assets/delete.svg';
 import "../CartItem/cartItem.css";
 
 const CartItem = ({ id, name, quantity, price, image, onRemove, onUpdateCartItem }) => {
-
-  //actualizar la cantidad directo desde el carro
   const [itemQuantity, setItemQuantity] = useState(quantity);
 
   const handleDecrement = () => {
@@ -27,7 +26,9 @@ const CartItem = ({ id, name, quantity, price, image, onRemove, onUpdateCartItem
   
   return (
     <div className="cartItemContainer">
+      <div className="cartItemImageContainer">
       <img src={image} alt={name} className="cartItemImage cartDetail" />
+      </div>
       <p className="cartDetail">{name}</p>
       <div className="cartDetail cartQuantityArea">
         <button className='cartButtons' onClick={handleDecrement}>-</button>
@@ -36,7 +37,9 @@ const CartItem = ({ id, name, quantity, price, image, onRemove, onUpdateCartItem
       </div>
 
       <p className="cartDetail">Precio: ${price}</p>
-      <button className="cartDeleteButton" onClick={() => onRemove(id)}>Eliminar</button>
+      <button className="cartDeleteButton " onClick={() => onRemove(id)}>
+        <img src={deleteIcon} alt="delete"/>
+      </button>
     </div>
   );
 };

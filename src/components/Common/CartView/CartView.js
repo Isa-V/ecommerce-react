@@ -5,17 +5,34 @@ import CartItem from "../CartItem/CartItem";
 import "../CartView/CartView.css";
 
 const CartView = () => {
-  const { cart, clearCart, totalQuantity, total, removeItemFromCart, updateCartItem} = useContext(CartContext);
+  const {
+    cart,
+    clearCart,
+    totalQuantity,
+    total,
+    removeItemFromCart,
+    updateCartItem,
+  } = useContext(CartContext);
+
+  const cartTotal = total();
 
   return (
     <div className="cartViewContainer">
       <div className="cartItems">
         <h2>Tu carrito de compras</h2>
         {cart.map((item) => (
-          <CartItem key={item.name} {...item} onRemove={removeItemFromCart} onUpdateCartItem={updateCartItem} />
+          <CartItem
+            key={item.name}
+            {...item}
+            onRemove={removeItemFromCart}
+            onUpdateCartItem={updateCartItem}
+          />
         ))}
-        <button onClick={clearCart}>Vaciar Carrito</button>
-
+        {cartTotal === 0 ? (
+          <p>Tu carrito de compra está vacío</p>
+        ) : (
+          <button onClick={clearCart}>Vaciar Carrito</button>
+        )}
       </div>
 
       <div className="orderSummary">
@@ -25,12 +42,14 @@ const CartView = () => {
           <span>Cantidad de elementos</span>
           <span>${totalQuantity()}</span>
           <span>Subtotal</span>
-          <span>${total()}</span>
+          <span>${cartTotal}</span>
         </div>
 
-        <Link to="/checkout" className="checkoutButton">
-          Hacer el pedido
-        </Link>
+        {cartTotal > 0 ? (
+          <Link to="/checkout" className="checkoutButton">
+            Hacer el pedido
+          </Link>
+        ) : null}
       </div>
     </div>
   );
